@@ -1,91 +1,57 @@
-# Karate Tournament Scoring (Version 2)
+# Karate Scorer
 
-This React web app manages competitor ranks and scores for a karate tournament. Each competitor can receive “ticks” (indicating rank placement). When finalizing a competitor, you can “Update” them to confirm their place, or “Assign Scores” to convert their ticks to a numeric score.
+A web app for scoring karate tournament divisions built with **React** and **Tailwind CSS v3**. Supports real-time scoring adjustments and placement updates with automatic score recalculations.
 
-## Features
+## 🚀 Features
+- Add, remove, and rank competitors.
+- Assign scores based on placements.
+- Real-time updates with automatic placement adjustments.
+- Mobile-friendly interface.
 
-- **Add Competitor (blue button)**: Dynamically adds new competitors.
-- **Update (green button)**: Finalizes any newly assigned places (blue) to become green and clears previous scores.
-- **Assign Scores (green button)**: Takes all ranked competitors (blue/green) and assigns a numeric score (9.99 to 9.93).
-- **Reset (red button)**: Resets to default 5 competitors.
-- **Rank Controls** (for non-green competitors):
-  - **+** / **–**: Increment or decrement the competitor's rank (ticks).
-  - **1st / 2nd / 3rd / 4th**: Jump directly to a specific rank.
-  - **Max**: Jumps one above the current highest rank.
-- **Del (red button)**: Removes a competitor.
-- **Edit button** (only appears if competitor is green): Reverts them back to blue for adjustments.
-
-## Getting Started
-
-1. **Clone** or **download** this repository:
+## 🛠️ Installation
+1. Clone this repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/karate-scoring-app.git
+   git clone https://github.com/herrkutt/KarateScorer.git
+   cd KarateScorer
    ```
-2. **Install dependencies**:
+2. Install dependencies:
    ```bash
-   cd karate-scoring-app
    npm install
    ```
-3. **Run locally**:
+3. Start the development server:
    ```bash
-   npm start
+   npm run start
    ```
-   The app should open at [http://localhost:3000](http://localhost:3000).
 
-## Deploying to GitHub Pages
+## 💻 Usage
+- **Local Development:** Open `http://localhost:3000` to view the app.
+- **Tailwind v3 Styling:** Styles are generated via Tailwind v3 (`3.4.17`).
 
-1. **Add the `homepage` field** in your `package.json`, pointing to your GitHub Pages URL:
+## 🚀 Deployment to GitHub Pages
+1. Ensure `homepage` is set correctly in `package.json`:
    ```json
-   {
-     "name": "karate-scoring-app",
-     "version": "1.0.0",
-     "private": true,
-     "homepage": "https://YOUR_USERNAME.github.io/karate-scoring-app",
-     ...
-   }
+   "homepage": "https://herrkutt.github.io/KarateScorer"
    ```
-2. **Install `gh-pages`**:
-   ```bash
-   npm install --save-dev gh-pages
-   ```
-3. **Add scripts** to your `package.json`:
-   ```json
-   {
-     "scripts": {
-       "predeploy": "npm run build",
-       "deploy": "gh-pages -d build",
-       "start": "react-scripts start",
-       "build": "react-scripts build",
-       ...
-     }
-   }
-   ```
-4. **Commit and push** your changes to GitHub if you haven’t already.
-5. **Deploy** by running:
+2. Build and deploy:
    ```bash
    npm run deploy
    ```
-6. Your app will be hosted at:
-   ```
-   https://YOUR_USERNAME.github.io/karate-scoring-app
-   ```
 
-## Usage
+## 🧩 Technology Stack
+- **Framework:** React (with React Scripts)
+- **Styling:** Tailwind CSS v3 (`3.4.17`)
+- **Deployment:** GitHub Pages
 
-1. **Add or remove** competitors using **Add Competitor** or **Del**.
-2. **Change ranks** using the **+** / **–** or **1st / 2nd / 3rd / 4th / Max** buttons.
-3. **Update** finalizes all newly placed competitors (turns them green).
-4. **Assign Scores** calculates numeric scores (9.99 to 9.93) for all ranks.
-5. **Reset** to restore the default list of competitors.
+## 📜 Scripts Overview
+- `npm run start`: Start the development server
+- `npm run build`: Build the production version
+- `npm run build:css`: Build Tailwind styles (`npx tailwindcss`)
+- `npm run deploy`: Deploy to GitHub Pages
 
-## Contributing
+## 🤝 Contribution Guidelines
+- Fork the repository.
+- Create a feature branch.
+- Submit a pull request.
 
-1. **Fork** the repo.
-2. **Create a new branch** (`git checkout -b feature/newFeature`).
-3. **Commit** your changes (`git commit -m 'Add a new feature'`).
-4. **Push** to the branch (`git push origin feature/newFeature`).
-5. **Open a Pull Request**.
-
-## License
-
-You may use or modify this code freely for personal or commercial projects. If you build upon or fork it, a link back to the source is appreciated but not required.
+---
+**Maintainer:** herrkutt
