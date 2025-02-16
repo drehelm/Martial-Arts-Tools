@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Card } from "./components/ui/card";
+import { Button } from "./components/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "./components/ui/dialog";
 
 export default function KarateScoringAppV2() {
   const [confirmAction, setConfirmAction] = useState(null);
