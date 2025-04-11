@@ -1,0 +1,30 @@
+{
+  "name": "martial-arts-tools",
+  "version": "1.0.0",
+  "description": "A collection of web applications for karate tournament management",
+  "homepage": "https://drehelm.github.io/Martial-Arts-Tools/",
+  "private": true,
+  "scripts": {
+    "build:division-calculator": "cd karate-division-calculator && npm run build",
+    "build:ref-scoresheet": "cd karate-ref-scoresheet && npm run build",
+    "build:tournament-bracket": "cd karate-tournament-bracket && npm run build",
+    "build:all": "npm run build:division-calculator && npm run build:ref-scoresheet && npm run build:tournament-bracket",
+    
+    "predeploy": "npm run build:all",
+    "deploy": "gh-pages -d . -s '{index.html,README.md,karate-*/build/**}' -o apps-deploy",
+    
+    "deploy:division-calculator": "cd karate-division-calculator && gh-pages -d build -e karate-division-calculator -a",
+    "deploy:ref-scoresheet": "cd karate-ref-scoresheet && gh-pages -d build -e karate-ref-scoresheet -a",
+    "deploy:tournament-bracket": "cd karate-tournament-bracket && gh-pages -d build -e karate-tournament-bracket -a",
+    
+    "deploy:all-individual": "npm run deploy:division-calculator && npm run deploy:ref-scoresheet && npm run deploy:tournament-bracket && gh-pages -d . -s 'index.html,README.md' --add"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drehelm/Martial-Arts-Tools.git"
+  },
+  "author": "drehelm",
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  }
+}
