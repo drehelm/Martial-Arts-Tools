@@ -2,7 +2,7 @@
   "name": "karate-division-calculator",
   "version": "2.0.0",
   "private": true,
-  "homepage": "https://herrkutt.github.io/KarateScorer/karate-division-calculator/",
+  "homepage": "https://drehelm.github.io/Martial-Arts-Tools/karate-division-calculator/",
   "scripts": {
     "build:css": "npx tailwindcss -i ./src/index.css -o ./src/output.css",
     "start": "npm run build:css && react-scripts start",

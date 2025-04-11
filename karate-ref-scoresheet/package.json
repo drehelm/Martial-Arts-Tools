@@ -2,7 +2,7 @@
   "name": "karate-ref-scoresheet",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://herrkutt.github.io/KarateScorer/karate-ref-scoresheet/",
+  "homepage": "https://drehelm.github.io/Martial-Arts-Tools/karate-ref-scoresheet/",
   "scripts": {
     "build:css": "npx tailwindcss -i ./src/index.css -o ./src/output.css",
     "start": "npm run build:css && react-scripts start",
