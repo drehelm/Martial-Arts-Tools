@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karate Scorer Applications</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    .app-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .app-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .app-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    h2 {
+      margin-top: 0;
+      color: #1a73e8;
+    }
+    a.app-link {
+      display: inline-block;
+      margin-top: 15px;
+      background-color: #1a73e8;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a.app-link:hover {
+      background-color: #0d5bba;
+    }
+    .app-description {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Karate Tournament Management Suite</h1>
+  
+  <div class="app-cards">
+    <div class="app-card">
+      <h2>Ref Scoresheet</h2>
+      <p class="app-description">
+        Track competitor placements and assign scores during tournament divisions.
+        Designed for referees to manage rankings and calculate scores.
+      </p>
+      <a href="./karate-ref-scoresheet/" class="app-link">Launch App</a>
+    </div>
+    
+    <div class="app-card">
+      <h2>Division Calculator</h2>
+      <p class="app-description">
+        Aggregate judge scores, detect scoring discrepancies, and calculate final
+        placements with tie-breaking logic.
+      </p>
+      <a href="./karate-division-calculator/" class="app-link">Launch App</a>
+    </div>
+    
+    <div class="app-card">
+      <h2>Tournament Bracket</h2>
+      <p class="app-description">
+        Generate printable tournament brackets with auto-calculated byes.
+        Create single elimination brackets for any number of competitors.
+      </p>
+      <a href="./karate-tournament-bracket/" class="app-link">Launch App</a>
+    </div>
+  </div>
+  
+  <footer style="margin-top: 50px; text-align: center; color: #666; font-size: 0.9em;">
+    &copy; 2025 Karate Tournament Management Suite by herrkutt
+  </footer>
+</body>
+</html>
