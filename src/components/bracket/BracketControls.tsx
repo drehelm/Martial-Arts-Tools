@@ -14,6 +14,7 @@ interface Props {
 function isValidCount(value: string): boolean {
   if (value === '') return false
   const floored = Math.floor(parseFloat(value))
+  if (isNaN(floored)) return false
   return floored >= 2 && floored <= 32
 }
 
@@ -36,10 +37,11 @@ export default function BracketControls({
   return (
     <div className="flex flex-wrap items-end gap-4 mb-6 print:hidden">
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+        <label htmlFor="competitor-count" className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
           Competitors (2–32)
         </label>
         <Input
+          id="competitor-count"
           type="number"
           min={2}
           max={32}
@@ -51,10 +53,11 @@ export default function BracketControls({
         />
       </div>
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+        <label htmlFor="bracket-date" className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
           Date (optional)
         </label>
         <Input
+          id="bracket-date"
           type="text"
           value={date}
           onChange={(e) => onDateChange(e.target.value)}
@@ -63,10 +66,11 @@ export default function BracketControls({
         />
       </div>
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+        <label htmlFor="bracket-division" className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
           Division (optional)
         </label>
         <Input
+          id="bracket-division"
           type="text"
           value={division}
           onChange={(e) => onDivisionChange(e.target.value)}
