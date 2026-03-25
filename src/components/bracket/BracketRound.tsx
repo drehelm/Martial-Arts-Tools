@@ -8,7 +8,7 @@ interface Props {
 
 export default function BracketRound({ label, matches }: Props) {
   return (
-    <div className="flex flex-col flex-1 min-w-[140px]">
+    <div className="flex flex-col flex-1 min-w-[110px]">
       {/* Round label */}
       <div className="text-center text-[9px] font-bold uppercase tracking-widest text-gray-400 pb-2 shrink-0">
         {label}

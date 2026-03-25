@@ -14,7 +14,7 @@ export default function BracketSheet({ data, date, division }: Props) {
   return (
     <div
       id="bracket-sheet"
-      className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 overflow-x-auto print:overflow-visible print:shadow-none print:border-none print:rounded-none print:p-4"
+      className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 print:shadow-none print:border-none print:rounded-none print:p-4"
     >
       {/* Header */}
       <div className="flex justify-between items-center pb-3 mb-4 border-b-2 border-gray-900">
