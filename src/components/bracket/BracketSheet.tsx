@@ -14,7 +14,7 @@ export default function BracketSheet({ data, date, division }: Props) {
   return (
     <div
       id="bracket-sheet"
-      className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 print:shadow-none print:border-none print:rounded-none print:p-4"
+      className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 overflow-x-auto print:overflow-visible print:shadow-none print:border-none print:rounded-none print:p-4"
     >
       {/* Header */}
       <div className="flex justify-between items-center pb-3 mb-4 border-b-2 border-gray-900">
@@ -42,28 +42,19 @@ export default function BracketSheet({ data, date, division }: Props) {
         </div>
       </div>
 
-      {/* Bracket tree — scrolls horizontally on screen for wide brackets */}
-      <div className="overflow-x-auto print:overflow-visible min-h-[300px]">
-        <div className="flex items-stretch h-full">
-          {data.rounds.map((round, i) => {
-            const isLast = i === data.rounds.length - 1
-            return (
-              <div key={i} className="flex items-stretch">
-                {isLast ? (
-                  <div className="flex flex-col">
-                    <BracketRound label={round.label} matches={round.matches} />
-                    <WinnersPanel />
-                  </div>
-                ) : (
-                  <BracketRound label={round.label} matches={round.matches} />
-                )}
-                {!isLast && (
-                  <BracketConnector pairCount={data.rounds[i + 1].matches.length} />
-                )}
-              </div>
-            )
-          })}
+      {/* Bracket tree + winners panel */}
+      <div className="flex items-stretch min-h-[300px]">
+        <div className="flex flex-1 items-stretch">
+          {data.rounds.map((round, i) => (
+            <div key={i} className="flex items-stretch">
+              <BracketRound label={round.label} matches={round.matches} />
+              {i < data.rounds.length - 1 && (
+                <BracketConnector pairCount={data.rounds[i + 1].matches.length} />
+              )}
+            </div>
+          ))}
         </div>
+        <WinnersPanel />
       </div>
 
       {/* Footer */}
