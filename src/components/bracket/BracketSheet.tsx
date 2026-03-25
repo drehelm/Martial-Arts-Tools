@@ -44,19 +44,21 @@ export default function BracketSheet({ data, date, division }: Props) {
 
       {/* Bracket tree + winners panel */}
       <div className="flex items-stretch min-h-[300px]">
-        {/* Bracket rounds and connectors */}
-        <div className="flex flex-1 items-stretch">
-          {data.rounds.map((round, i) => (
-            <div key={i} className="flex items-stretch">
-              <BracketRound label={round.label} matches={round.matches} />
-              {/* No connector after the final round */}
-              {i < data.rounds.length - 1 && (
-                <BracketConnector pairCount={data.rounds[i + 1].matches.length} />
-              )}
-            </div>
-          ))}
+        {/* Bracket rounds and connectors — scrolls horizontally on screen for wide brackets */}
+        <div className="overflow-x-auto print:overflow-visible flex-1">
+          <div className="flex items-stretch h-full">
+            {data.rounds.map((round, i) => (
+              <div key={i} className="flex items-stretch">
+                <BracketRound label={round.label} matches={round.matches} />
+                {/* No connector after the final round */}
+                {i < data.rounds.length - 1 && (
+                  <BracketConnector pairCount={data.rounds[i + 1].matches.length} />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
-        {/* Winners panel */}
+        {/* Winners panel — always anchored to the right, outside the scroll area */}
         <WinnersPanel />
       </div>
 

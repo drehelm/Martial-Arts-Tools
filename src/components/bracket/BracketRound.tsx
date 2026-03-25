@@ -17,10 +17,10 @@ export default function BracketRound({ label, matches }: Props) {
       <div className="flex flex-col flex-1">
         {matches.map((match, i) => (
           <div key={i} className="flex flex-col flex-1 justify-center px-2 py-1">
-            <BracketSlot type={match.top.type} />
-            {/* Vertical bar joining the two slots */}
-            <div className="w-px bg-gray-800 self-start h-2" />
-            <BracketSlot type={match.bottom.type} />
+            <div className="border border-gray-700 rounded overflow-hidden">
+              <BracketSlot type={match.top.type} position="top" />
+              <BracketSlot type={match.bottom.type} position="bottom" />
+            </div>
           </div>
         ))}
       </div>
