@@ -42,19 +42,33 @@ export default function BracketSheet({ data, date, division }: Props) {
         </div>
       </div>
 
-      {/* Bracket tree + winners panel */}
+      {/* Bracket tree */}
       <div className="flex items-stretch min-h-[300px]">
         <div className="flex flex-1 items-stretch">
-          {data.rounds.map((round, i) => (
-            <div key={i} className="flex items-stretch">
-              <BracketRound label={round.label} matches={round.matches} />
-              {i < data.rounds.length - 1 && (
-                <BracketConnector pairCount={data.rounds[i + 1].matches.length} />
-              )}
-            </div>
-          ))}
+          {data.rounds.map((round, i) => {
+            const isLast = i === data.rounds.length - 1
+            return (
+              <div key={i} className="flex items-stretch">
+                {isLast ? (
+                  // Final column: relative container so WinnersPanel can be
+                  // absolutely pinned to the bottom without stealing height
+                  // from BracketRound — Final match stays correctly centered
+                  <div className="relative flex flex-col flex-1 min-w-[140px]">
+                    <BracketRound label={round.label} matches={round.matches} />
+                    <div className="absolute bottom-0 left-0">
+                      <WinnersPanel />
+                    </div>
+                  </div>
+                ) : (
+                  <BracketRound label={round.label} matches={round.matches} />
+                )}
+                {!isLast && (
+                  <BracketConnector pairCount={data.rounds[i + 1].matches.length} />
+                )}
+              </div>
+            )
+          })}
         </div>
-        <WinnersPanel />
       </div>
 
       {/* Footer */}
