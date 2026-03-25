@@ -43,6 +43,7 @@ export default function BracketSheet({ data, date, division }: Props) {
       </div>
 
       {/* Bracket tree */}
+      <div className="overflow-x-auto print:overflow-visible">
       <div className="flex items-stretch min-h-[300px]">
         <div className="flex flex-1 items-stretch">
           {data.rounds.map((round, i) => {
@@ -69,6 +70,7 @@ export default function BracketSheet({ data, date, division }: Props) {
             )
           })}
         </div>
+      </div>
       </div>
 
       {/* Footer */}

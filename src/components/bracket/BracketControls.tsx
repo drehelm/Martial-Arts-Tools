@@ -36,7 +36,7 @@ export default function BracketControls({
 
   return (
     <div className="flex flex-wrap items-end gap-4 mb-6 print:hidden">
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 w-full sm:w-auto">
         <label htmlFor="competitor-count" className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
           Competitors (2–32)
         </label>
@@ -48,11 +48,11 @@ export default function BracketControls({
           step={1}
           value={competitorCount}
           onChange={(e) => onCompetitorCountChange(e.target.value)}
-          className="w-28"
+          className="w-full sm:w-28"
           placeholder="e.g. 8"
         />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 w-full sm:w-auto">
         <label htmlFor="bracket-date" className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
           Date (optional)
         </label>
@@ -61,11 +61,11 @@ export default function BracketControls({
           type="text"
           value={date}
           onChange={(e) => onDateChange(e.target.value)}
-          className="w-36"
+          className="w-full sm:w-36"
           placeholder="e.g. May 3, 2026"
         />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1 w-full sm:w-auto">
         <label htmlFor="bracket-division" className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
           Division (optional)
         </label>
@@ -74,11 +74,11 @@ export default function BracketControls({
           type="text"
           value={division}
           onChange={(e) => onDivisionChange(e.target.value)}
-          className="w-48"
+          className="w-full sm:w-48"
           placeholder="e.g. Adult Black Belt"
         />
       </div>
-      <Button onClick={handleGenerate} disabled={!valid}>
+      <Button onClick={handleGenerate} disabled={!valid} className="w-full sm:w-auto">
         Generate Bracket
       </Button>
     </div>

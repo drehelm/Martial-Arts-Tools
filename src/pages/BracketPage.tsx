@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import BracketControls from '@/components/bracket/BracketControls'
 import BracketSheet from '@/components/bracket/BracketSheet'
+import BracketSummary from '@/components/bracket/BracketSummary'
 import { generateBracket, type BracketData } from '@/components/bracket/bracketUtils'
 
 export default function BracketPage() {
@@ -46,7 +47,10 @@ export default function BracketPage() {
         />
 
         {bracketData ? (
-          <BracketSheet data={bracketData} date={date} division={division} />
+          <>
+            <BracketSummary data={bracketData} />
+            <BracketSheet data={bracketData} date={date} division={division} />
+          </>
         ) : (
           <div className="text-center text-gray-400 py-24 print:hidden">
             Enter a competitor count and click Generate Bracket to begin.
