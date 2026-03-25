@@ -1,57 +1,42 @@
-# Martial-Arts-Tools
+# Martial Arts Tools
 
-A collection of web applications for karate tournament management.
+A collection of web applications for karate tournament management, built as a single React app deployed to GitHub Pages.
 
-## Applications
+**Live site:** https://drehelm.github.io/Martial-Arts-Tools/
 
-This repository contains three standalone web applications:
+## Tools
 
-### 1. Karate Division Calculator
+### Tournament Bracket Generator ✅
+Generate a print-friendly single-elimination bracket for 2–32 competitors. BYEs are distributed to guarantee the Final always has two real competitors. Includes a MARA winners panel and referee signature fields.
 
-Calculate and aggregate scores for karate tournament competitors, handle score discrepancies, and determine final placements.
+[Open Tool](https://drehelm.github.io/Martial-Arts-Tools/#/bracket)
 
-[Open Application](https://drehelm.github.io/Martial-Arts-Tools/karate-division-calculator/)
+### Karate Ref Scoresheet *(coming soon)*
+Track competitors, assign rankings, and calculate scores during tournament divisions.
 
-### 2. Karate Ref Scoresheet
+### Karate Division Calculator *(coming soon)*
+Calculate and aggregate scores for karate tournament competitors and determine final placements.
 
-Track competitors, assign rankings, and calculate scores based on rankings during tournament divisions.
+## Development
 
-[Open Application](https://drehelm.github.io/Martial-Arts-Tools/karate-ref-scoresheet/)
+**Stack:** Vite + React 18 + TypeScript + Tailwind CSS v3 + Shadcn UI + React Router (HashRouter)
 
-### 3. Karate Tournament Bracket
+```bash
+# Install dependencies
+npm install
 
-Create and visualize single elimination tournament brackets with automatic bye distribution and printable output.
+# Start dev server
+npm run dev
 
-[Open Application](https://drehelm.github.io/Martial-Arts-Tools/karate-tournament-bracket/)
+# Run tests
+npm test
 
-## Features
+# Build for production
+npm run build
 
-- **Modern Web Technologies**: Built with React and styled with Tailwind CSS
-- **Responsive Design**: Works on mobile devices, tablets, and desktop browsers
-- **Offline Support**: Use the applications even without an internet connection
-- **Printable Outputs**: Generate PDFs for brackets, score sheets, and division results
-
-## Getting Started
-
-To run these applications locally:
-
-1. Clone this repository
-2. Navigate to the application directory you want to run
-   ```
-   cd karate-division-calculator
-   ```
-3. Install dependencies
-   ```
-   npm install
-   ```
-4. Start the development server
-   ```
-   npm start
-   ```
-
-## Deployment
-
-Each application can be deployed individually or together using the root package.json scripts.
+# Deploy to GitHub Pages
+npm run deploy
+```
 
 ## License
 
