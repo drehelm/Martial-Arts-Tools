@@ -5,10 +5,10 @@ interface Props {
 }
 
 const RANKS: [string, number][] = [
-  ['1st', 0],
-  ['2nd', 1],
-  ['3rd', 2],
-  ['4th', 3],
+  ['1st', 1],
+  ['2nd', 2],
+  ['3rd', 3],
+  ['4th', 4],
 ]
 
 export default function DirectRankPanel({ activeId, onRank, onMax }: Props) {

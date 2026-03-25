@@ -72,7 +72,7 @@ describe('ScoresheetPage', () => {
     expect(screen.getByRole('button', { name: /^1st$/i })).not.toBeDisabled()
   })
 
-  it('1st button sets ticks back to 0', async () => {
+  it('1st button sets active competitor to 1 tick (1st place)', async () => {
     const user = userEvent.setup()
     renderPage()
     const plusButtons = screen.getAllByRole('button', { name: /increase ticks/i })
@@ -81,6 +81,7 @@ describe('ScoresheetPage', () => {
     expect(screen.getByText('✓✓')).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: /^1st$/i }))
     expect(screen.queryByText('✓✓')).not.toBeInTheDocument()
+    expect(screen.getByText('✓')).toBeInTheDocument()
   })
 
   it('Max button gives last-place ticks (currentMax + 1)', async () => {
@@ -107,6 +108,8 @@ describe('ScoresheetPage', () => {
   it('Scores button assigns and displays scores', async () => {
     const user = userEvent.setup()
     renderPage()
+    const plusButtons = screen.getAllByRole('button', { name: /increase ticks/i })
+    await user.click(plusButtons[0])
     await user.click(screen.getByRole('button', { name: /^scores$/i }))
     const scores = screen.getAllByText(/^9\.(9[3-9])$/)
     expect(scores.length).toBeGreaterThan(0)

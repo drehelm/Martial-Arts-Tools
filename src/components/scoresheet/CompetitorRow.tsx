@@ -34,7 +34,7 @@ export default function CompetitorRow({ competitor, isActive, onTickChange, onNa
         {formatTicks(competitor.ticks)}
       </span>
       {competitor.score !== undefined && (
-        <span className="text-xs font-mono text-gray-400 shrink-0">{competitor.score.toFixed(2)}</span>
+        <span className="text-xl font-bold text-gray-700 shrink-0">{competitor.score.toFixed(2)}</span>
       )}
       <button
         type="button"
