@@ -25,6 +25,7 @@ export default function BracketPage() {
         <span className="text-sm font-semibold text-gray-900">Tournament Bracket</span>
         {bracketData && (
           <button
+            type="button"
             onClick={() => window.print()}
             className="ml-auto text-sm font-medium text-gray-700 border border-gray-300 rounded px-3 py-1.5 hover:bg-gray-50 transition-colors"
           >
