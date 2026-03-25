@@ -22,7 +22,7 @@ export default function CompetitorRow({ competitor, isActive, onTickChange, onNa
         isActive ? ' border-l-4 border-l-blue-500 bg-blue-50' : ''
       }`}
     >
-      <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${statusDot[competitor.status]}`} />
+      <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${statusDot[competitor.status] ?? 'bg-gray-300'}`} />
       <input
         type="text"
         value={competitor.name}
