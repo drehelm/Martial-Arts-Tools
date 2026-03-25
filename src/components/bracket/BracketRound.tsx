@@ -1,0 +1,29 @@
+import type { Match } from './bracketUtils'
+import BracketSlot from './BracketSlot'
+
+interface Props {
+  label: string
+  matches: Match[]
+}
+
+export default function BracketRound({ label, matches }: Props) {
+  return (
+    <div className="flex flex-col flex-1 min-w-[140px]">
+      {/* Round label */}
+      <div className="text-center text-[9px] font-bold uppercase tracking-widest text-gray-400 pb-2 shrink-0">
+        {label}
+      </div>
+      {/* Matches */}
+      <div className="flex flex-col flex-1">
+        {matches.map((match, i) => (
+          <div key={i} className="flex flex-col flex-1 justify-center px-2 py-1">
+            <BracketSlot type={match.top.type} />
+            {/* Vertical bar joining the two slots */}
+            <div className="w-px bg-gray-800 self-start h-2" />
+            <BracketSlot type={match.bottom.type} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
