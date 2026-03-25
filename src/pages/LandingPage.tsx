@@ -13,7 +13,7 @@ const tools = [
     description:
       'Track competitors, assign rankings, and calculate scores based on rankings during tournament divisions.',
     href: '/scoresheet',
-    available: false,
+    available: true,
   },
   {
     title: 'Division Calculator',
