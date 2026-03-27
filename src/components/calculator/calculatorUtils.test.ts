@@ -11,7 +11,6 @@ import {
   detectOutlier,
   assignPlacements,
   DEFAULT_POINTS,
-  BELT_CONFIG,
   type Competitor,
 } from './calculatorUtils'
 
