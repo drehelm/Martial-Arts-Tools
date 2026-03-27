@@ -1,5 +1,5 @@
 // src/components/calculator/CompetitorRow.tsx
-import { displayScore, detectOutlier, BELT_CONFIG, type Competitor, type PlacedCompetitor, type BeltMode } from './calculatorUtils'
+import { displayScore, detectOutlier, BELT_CONFIG, POINTS_MAX, type Competitor, type PlacedCompetitor, type BeltMode } from './calculatorUtils'
 
 interface Props {
   competitor: Competitor
@@ -56,7 +56,7 @@ export default function CompetitorRow({
           type="button"
           aria-label={`${JUDGE_LABELS[idx]} worse`}
           onClick={() => onAdjust(idx, -1)}
-          disabled={competitor.scores[idx] >= 6}
+          disabled={competitor.scores[idx] >= POINTS_MAX}
           className="w-7 h-7 rounded bg-gray-100 text-gray-700 font-bold text-sm disabled:opacity-30 hover:bg-gray-200"
         >
           −
@@ -145,7 +145,7 @@ export default function CompetitorRow({
                 type="button"
                 aria-label={`${JUDGE_LABELS[idx]} worse`}
                 onClick={() => onAdjust(idx, -1)}
-                disabled={competitor.scores[idx] >= 6}
+                disabled={competitor.scores[idx] >= POINTS_MAX}
                 className="w-6 h-6 rounded bg-gray-100 text-gray-700 text-xs font-bold disabled:opacity-30 hover:bg-gray-200"
               >
                 −

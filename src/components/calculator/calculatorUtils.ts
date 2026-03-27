@@ -7,14 +7,16 @@ export const BELT_CONFIG = {
   colour: { rangeMax: 8.99, label: 'Coloured Belt' },
 } as const
 
-// Scores stored as integer point values: 0 (best/rangeMax) to 6 (worst/rangeMin).
+// Scores stored as integer point values: 0 (best/rangeMax) to 9 (worst/rangeMin).
+// Range: black belt 9.90–9.99, coloured belt 8.90–8.99 (CKKA rules).
 // Default is always 2 (9.97 black belt, 8.97 coloured belt).
+export const POINTS_MAX = 9
 export const DEFAULT_POINTS = 2
 
 export interface Competitor {
   id: string
   name: string
-  scores: [number, number, number] // integer point values 0-6
+  scores: [number, number, number] // integer point values 0-9
 }
 
 export interface PlacedCompetitor extends Competitor {
@@ -68,7 +70,7 @@ export function adjustScore(
   judgeIndex: 0 | 1 | 2,
   delta: number
 ): Competitor {
-  const newPoints = Math.max(0, Math.min(6, competitor.scores[judgeIndex] - delta))
+  const newPoints = Math.max(0, Math.min(POINTS_MAX, competitor.scores[judgeIndex] - delta))
   const newScores: [number, number, number] = [...competitor.scores] as [number, number, number]
   newScores[judgeIndex] = newPoints
   return { ...competitor, scores: newScores }
@@ -85,7 +87,7 @@ export function detectOutlier(scores: [number, number, number]): OutlierResult |
       const midP = sorted[1]
       const type: 'high' | 'low' = sP < midP ? 'high' : 'low'
       const rawSuggested = type === 'high' ? midP - 2 : midP + 2
-      const suggestedPoints = Math.max(0, Math.min(6, rawSuggested))
+      const suggestedPoints = Math.max(0, Math.min(POINTS_MAX, rawSuggested))
       if (suggestedPoints === sP) return null
       return { judgeIndex: idx, type, suggestedPoints }
     }
@@ -95,51 +97,75 @@ export function detectOutlier(scores: [number, number, number]): OutlierResult |
   return check(pA, pB, pC, 0) ?? check(pB, pA, pC, 1) ?? check(pC, pA, pB, 2) ?? null
 }
 
-export function assignPlacements(competitors: Competitor[], mode: BeltMode): PlacementResult {
-  const { rangeMax } = BELT_CONFIG[mode]
+// CKKA tie-breaking comparator (pairwise, applied in order):
+// 1. Total points (lower = better)
+// 2. Judge winner comparison: count how many judges preferred each competitor
+// 3. Highest middle score (middle of 3 scores sorted ascending; lower points = better)
+// 4. Remove best score: compare sum of remaining two after dropping lowest-point score
+// 5. Remove worst score: compare sum of remaining two after dropping highest-point score
+// 6. Fully tied (re-do in practice)
+type WithPoints = Competitor & { totalPoints: number }
 
-  // Count of scores at the best possible value (0 points)
-  const maxScoreCount = (c: Competitor) => c.scores.filter(s => s === 0).length
+function ckkaCompare(a: WithPoints, b: WithPoints): number {
+  if (a.totalPoints !== b.totalPoints) return a.totalPoints - b.totalPoints
 
-  const withPoints = competitors.map(c => ({
+  // Step 2: judge winner comparison
+  let aWins = 0, bWins = 0
+  for (let i = 0; i < 3; i++) {
+    if (a.scores[i] < b.scores[i]) aWins++
+    else if (b.scores[i] < a.scores[i]) bWins++
+  }
+  if (aWins !== bWins) return bWins - aWins // more judge wins = better placement
+
+  // Step 3: highest middle score (lower points = better score)
+  const midA = [...a.scores].sort((x, y) => x - y)[1]
+  const midB = [...b.scores].sort((x, y) => x - y)[1]
+  if (midA !== midB) return midA - midB
+
+  // Step 4: remove best score (drop the lowest-point score, compare remaining sum)
+  const removeHighA = a.totalPoints - Math.min(...a.scores)
+  const removeHighB = b.totalPoints - Math.min(...b.scores)
+  if (removeHighA !== removeHighB) return removeHighA - removeHighB
+
+  // Step 5: remove worst score (drop the highest-point score, compare remaining sum)
+  const removeLowA = a.totalPoints - Math.max(...a.scores)
+  const removeLowB = b.totalPoints - Math.max(...b.scores)
+  if (removeLowA !== removeLowB) return removeLowA - removeLowB
+
+  return 0 // fully tied
+}
+
+export function assignPlacements(competitors: Competitor[], _mode: BeltMode): PlacementResult {
+  const withPoints: WithPoints[] = competitors.map(c => ({
     ...c,
     totalPoints: c.scores.reduce((sum, s) => sum + s, 0),
   }))
 
-  // Sort: ascending by totalPoints, then descending by count of max-scores (tie-break)
-  const sorted = [...withPoints].sort((a, b) => {
-    if (a.totalPoints !== b.totalPoints) return a.totalPoints - b.totalPoints
-    return maxScoreCount(b) - maxScoreCount(a)
-  })
+  const sorted = [...withPoints].sort(ckkaCompare)
 
   let tieBreakApplied = false
   const placed: PlacedCompetitor[] = []
 
   for (let i = 0; i < sorted.length; i++) {
-    const curr = sorted[i]
     if (i === 0) {
-      placed.push({ ...curr, placement: 1 })
+      placed.push({ ...sorted[i], placement: 1 })
       continue
     }
     const prev = sorted[i - 1]
-    if (curr.totalPoints !== prev.totalPoints) {
-      // Different points: new placement
-      placed.push({ ...curr, placement: i + 1 })
-    } else if (maxScoreCount(curr) !== maxScoreCount(prev)) {
-      // Same points, different max-score count: tie-break separated them
-      tieBreakApplied = true
+    const curr = sorted[i]
+    if (ckkaCompare(curr, prev) === 0) {
+      // Fully tied after all steps: share placement
+      placed.push({ ...curr, placement: placed[i - 1].placement })
+    } else if (curr.totalPoints !== prev.totalPoints) {
+      // Separated by total points alone
       placed.push({ ...curr, placement: i + 1 })
     } else {
-      // Fully tied: share previous placement
-      placed.push({ ...curr, placement: placed[i - 1].placement })
+      // Same total points, separated by CKKA tie-break
+      tieBreakApplied = true
+      placed.push({ ...curr, placement: i + 1 })
     }
   }
 
-  // Restore original order
   const result = competitors.map(c => placed.find(p => p.id === c.id)!)
-
-  // Suppress rangeMax usage warning (rangeMax unused since scores are already integer points)
-  void rangeMax
-
   return { competitors: result, tieBreakApplied }
 }

@@ -126,7 +126,7 @@ export default function CalculatorPage() {
       {/* Tie-break note */}
       {tieBreakApplied && (
         <div className="bg-blue-50 border-b border-blue-100 px-4 py-2 text-xs text-blue-700 text-center">
-          Tie broken by highest scores
+          Tie broken per CKKA rules
         </div>
       )}
 

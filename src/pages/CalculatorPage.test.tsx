@@ -63,15 +63,12 @@ describe('CalculatorPage', () => {
     expect(betterButtons[0]).toBeDisabled()
   })
 
-  it('− button is disabled when score is already at min (9.93)', async () => {
+  it('− button is disabled when score is already at min (9.90)', async () => {
     const user = userEvent.setup()
     renderPage('?c=Alice')
     const worseButtons = screen.getAllByRole('button', { name: /judge 1 worse/i })
-    // Press worse 4 times from 9.97 → 9.93
-    await user.click(worseButtons[0])
-    await user.click(worseButtons[0])
-    await user.click(worseButtons[0])
-    await user.click(worseButtons[0])
+    // Press worse 7 times from 9.97 (pts=2) → 9.90 (pts=9)
+    for (let i = 0; i < 7; i++) await user.click(worseButtons[0])
     expect(worseButtons[0]).toBeDisabled()
   })
 

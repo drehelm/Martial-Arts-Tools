@@ -102,11 +102,11 @@ describe('adjustScore', () => {
     expect(adjustScore(c2, 0, 1).scores[0]).toBe(0)
   })
 
-  it('delta -1 increases points (worse score), clamped to 6', () => {
-    const c: Competitor = { ...createCompetitor('1'), scores: [5, 2, 2] }
-    expect(adjustScore(c, 0, -1).scores[0]).toBe(6)
-    const c2: Competitor = { ...createCompetitor('1'), scores: [6, 2, 2] }
-    expect(adjustScore(c2, 0, -1).scores[0]).toBe(6)
+  it('delta -1 increases points (worse score), clamped to 9', () => {
+    const c: Competitor = { ...createCompetitor('1'), scores: [8, 2, 2] }
+    expect(adjustScore(c, 0, -1).scores[0]).toBe(9)
+    const c2: Competitor = { ...createCompetitor('1'), scores: [9, 2, 2] }
+    expect(adjustScore(c2, 0, -1).scores[0]).toBe(9)
   })
 
   it('only affects the targeted judge slot', () => {
@@ -156,16 +156,14 @@ describe('detectOutlier', () => {
     expect(r1!.judgeIndex).toBe(1)
   })
 
-  it('clamps suggested value to range [0, 6]', () => {
-    // [5, 5, 1]: pC=1 is the outlier (high score, type='high' since 1 < midP=5)
-    // rawSuggested = midP - 2 = 5 - 2 = 3; no clamping needed here
+  it('suggestion is unclamped within [0, 9] range', () => {
+    // [5, 5, 1]: pC=1 is outlier (type='high', midP=5), suggest 5-2=3
     const result = detectOutlier([5, 5, 1])
     expect(result).not.toBeNull()
     expect(result!.judgeIndex).toBe(2)
     expect(result!.type).toBe('high')
     expect(result!.suggestedPoints).toBe(3)
-    // Verify low-path clamping: [3, 0, 0] → pA=3 is outlier (low score, type='low')
-    // rawSuggested = midP + 2 = 0 + 2 = 2; clamped to max(0,min(6,2)) = 2
+    // [3, 0, 0]: pA=3 is outlier (type='low', midP=0), suggest 0+2=2
     const result2 = detectOutlier([3, 0, 0])
     expect(result2).not.toBeNull()
     expect(result2!.type).toBe('low')
@@ -203,10 +201,15 @@ describe('assignPlacements', () => {
     expect(tieBreakApplied).toBe(false)
   })
 
-  it('applies tie-break by max-score count when points are equal', () => {
+  it('tie-break step 2: judge winner comparison separates tied competitors', () => {
+    // A: [1, 3, 2] = 6pts. B: [2, 2, 2] = 6pts.
+    // J1: A wins (1<2), J2: B wins (2<3), J3: A wins (2<2? No, equal). Actually J3: tied.
+    // Recount: J1 A wins, J2 B wins, J3 tied → 1-1. Let's use clearer data.
+    // A: [1, 1, 4] = 6pts. B: [2, 2, 2] = 6pts.
+    // J1: A wins (1<2), J2: A wins (1<2), J3: B wins (2<4). A wins 2-1.
     const cs: Competitor[] = [
-      { id: '1', name: 'A', scores: [0, 3, 3] },
-      { id: '2', name: 'B', scores: [2, 2, 2] },
+      { id: '1', name: 'A', scores: [1, 1, 4] }, // 6 pts, 2 judge wins
+      { id: '2', name: 'B', scores: [2, 2, 2] }, // 6 pts, 1 judge win
     ]
     const { competitors, tieBreakApplied } = assignPlacements(cs, mode)
     expect(competitors.find(c => c.id === '1')!.placement).toBe(1)
@@ -214,7 +217,21 @@ describe('assignPlacements', () => {
     expect(tieBreakApplied).toBe(true)
   })
 
-  it('tieBreakApplied is false when step 2 evaluated but no separation achieved', () => {
+  it('tie-break step 3: highest middle score separates when judge comparison ties', () => {
+    // A: [0, 2, 4] = 6pts. B: [1, 1, 4] = 6pts.
+    // J1: A wins (0<1), J2: B wins (1<2), J3: tied (4=4) → 1-1 tied on judge comparison.
+    // midA = [0,2,4][1] = 2. midB = [1,1,4][1] = 1. B has lower midPoints = better middle score.
+    const cs: Competitor[] = [
+      { id: '1', name: 'A', scores: [0, 2, 4] }, // 6 pts, mid=2
+      { id: '2', name: 'B', scores: [1, 1, 4] }, // 6 pts, mid=1 (better)
+    ]
+    const { competitors, tieBreakApplied } = assignPlacements(cs, mode)
+    expect(competitors.find(c => c.id === '2')!.placement).toBe(1)
+    expect(competitors.find(c => c.id === '1')!.placement).toBe(2)
+    expect(tieBreakApplied).toBe(true)
+  })
+
+  it('tieBreakApplied is false when all steps produce no separation (shared placement)', () => {
     const cs: Competitor[] = [
       { id: '1', name: 'A', scores: [2, 2, 2] },
       { id: '2', name: 'B', scores: [2, 2, 2] },
@@ -224,10 +241,11 @@ describe('assignPlacements', () => {
   })
 
   it('partially resolves multi-way tie: tieBreakApplied true if any pair separated', () => {
+    // A wins on judge comparison over B and C; B and C are fully tied with each other.
     const cs: Competitor[] = [
-      { id: '1', name: 'A', scores: [0, 3, 3] },
-      { id: '2', name: 'B', scores: [2, 2, 2] },
-      { id: '3', name: 'C', scores: [2, 2, 2] },
+      { id: '1', name: 'A', scores: [1, 1, 4] }, // 6 pts, 2 judge wins
+      { id: '2', name: 'B', scores: [2, 2, 2] }, // 6 pts, 1 judge win
+      { id: '3', name: 'C', scores: [2, 2, 2] }, // 6 pts, 1 judge win (tied with B)
     ]
     const { competitors, tieBreakApplied } = assignPlacements(cs, mode)
     expect(competitors.find(c => c.id === '1')!.placement).toBe(1)
