@@ -20,7 +20,7 @@ const tools = [
     description:
       'Aggregate judge scores, detect scoring discrepancies, and calculate final placements.',
     href: '/calculator',
-    available: false,
+    available: true,
   },
 ]
 
